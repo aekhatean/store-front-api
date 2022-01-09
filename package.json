@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
-    "start": "nodemon src/index.ts",
+    "start": "nodemon src/server.ts",
     "build": "npx tsc",
     "jasmine": "jasmine",
     "prettier": "prettier --config .prettierrc './**/*.ts' --write",
