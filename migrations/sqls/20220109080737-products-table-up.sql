@@ -1,6 +1,6 @@
 /* Replace with your SQL commands */
 CREATE TABLE products(
-    id INT SERIAL PRIMARY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     price INT
 );
