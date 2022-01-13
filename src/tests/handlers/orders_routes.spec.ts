@@ -18,7 +18,7 @@ describe('orders handlers routes work properly', (): void => {
       .post('/orders')
       .send({
         userId: 1,
-        status: 'pending'
+        status: 'open'
       })
       .expect('Content-Type', /json/)
       .expect(200)

@@ -60,7 +60,7 @@ export class Users {
 
       return user;
     } catch (err) {
-      throw new Error(`Could not add new book ${u.username}. Error: ${err}`);
+      throw new Error(`Could not add new user ${u.username}. Error: ${err}`);
     }
   }
 }

@@ -18,13 +18,13 @@ export class Products {
     }
   }
 
-  async show(id: number): Promise<Product[]> {
+  async show(id: number): Promise<Product> {
     try {
       const conn = await Client.connect();
       const sql = `SELECT * FROM products WHERE id=($1)`;
       const result = conn.query(sql, [id]);
       conn.release();
-      return (await result).rows;
+      return (await result).rows[0];
     } catch (err) {
       throw new Error(`Cannot connect to database: ${err}`);
     }
@@ -38,13 +38,13 @@ export class Products {
 
       const result = await conn.query(sql, [p.name, p.price]);
 
-      const user = result.rows[0];
+      const product = result.rows[0];
 
       conn.release();
 
-      return user;
+      return product;
     } catch (err) {
-      throw new Error(`Could not add new book ${p.name}. Error: ${err}`);
+      throw new Error(`Could not add new product ${p.name}. Error: ${err}`);
     }
   }
 }

@@ -4,12 +4,12 @@ import { Order, OrderProduct, Orders } from '../models/orders.model';
 
 const store = new Orders();
 
-const show = async (_req: Request, res: Response) => {
+const show = async (_req: Request, res: Response): Promise<void> => {
   const product = await store.show(_req.body.id);
   res.json(product);
 };
 
-const create = async (_req: Request, res: Response) => {
+const create = async (_req: Request, res: Response): Promise<void> => {
   const order: Order = {
     userId: _req.body.userId,
     status: _req.body.status
@@ -28,7 +28,7 @@ const create = async (_req: Request, res: Response) => {
   }
 };
 
-const addProduct = async (_req: Request, res: Response) => {
+const addProduct = async (_req: Request, res: Response): Promise<void> => {
   const orderProduct: OrderProduct = {
     orderId: _req.body.order_id,
     productId: _req.body.product_id,
@@ -36,7 +36,11 @@ const addProduct = async (_req: Request, res: Response) => {
   };
 
   try {
-    const newOrderProduct = await store.addProduct(orderProduct);
+    const newOrderProduct = await store.addProduct(
+      orderProduct.quantity,
+      orderProduct.orderId,
+      orderProduct.productId
+    );
     const token = jwt.sign(
       { orderProduct: newOrderProduct },
       process.env.TOKEN_SECRET as unknown as Secret
@@ -48,7 +52,7 @@ const addProduct = async (_req: Request, res: Response) => {
   }
 };
 
-const orders_routes = (app: express.Application) => {
+const orders_routes = (app: express.Application): void => {
   app.post('/orders', create);
   app.post('/orders/:id', addProduct);
   app.get('/orders/:id', show);

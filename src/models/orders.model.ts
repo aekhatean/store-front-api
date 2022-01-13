@@ -8,7 +8,7 @@ export type Order = {
 export type OrderProduct = {
   orderId: number;
   productId: number;
-  quantity: string;
+  quantity: number;
 };
 export class Orders {
   async show(id: number): Promise<Order> {
@@ -41,17 +41,37 @@ export class Orders {
     }
   }
 
-  async addProduct(op: OrderProduct): Promise<Order> {
+  async addProduct(
+    quantity: number,
+    orderId: number,
+    productId: number
+  ): Promise<Order> {
+    // get order to see if it is open
     try {
-      const sql =
-        'INSERT INTO order_products (order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *';
+      const ordersql = 'SELECT * FROM orders WHERE id=($1)';
       const conn = await Client.connect();
 
-      const result = await conn.query(sql, [
-        op.orderId,
-        op.productId,
-        op.quantity
-      ]);
+      const result = await conn.query(ordersql, [orderId]);
+
+      const order = result.rows[0];
+
+      if (order.status !== 'open') {
+        throw new Error(
+          `Could not add product ${productId} to order ${orderId} because order status is ${order.status}`
+        );
+      }
+
+      conn.release();
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+
+    try {
+      const sql =
+        'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *';
+      const conn = await Client.connect();
+
+      const result = await conn.query(sql, [quantity, orderId, productId]);
 
       const order = result.rows[0];
 
@@ -59,7 +79,9 @@ export class Orders {
 
       return order;
     } catch (err) {
-      throw new Error(`Could not add product to your order: ${err}`);
+      throw new Error(
+        `Could not add product ${productId} to order ${orderId}: ${err}`
+      );
     }
   }
 }
