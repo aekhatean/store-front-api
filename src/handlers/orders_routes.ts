@@ -18,7 +18,7 @@ const create = async (_req: Request, res: Response) => {
   try {
     const newOrder = await store.create(order);
     const token = jwt.sign(
-      { product: newOrder },
+      { order: newOrder },
       process.env.TOKEN_SECRET as unknown as Secret
     );
     res.json(token);
@@ -38,7 +38,7 @@ const addProduct = async (_req: Request, res: Response) => {
   try {
     const newOrderProduct = await store.addProduct(orderProduct);
     const token = jwt.sign(
-      { product: newOrderProduct },
+      { orderProduct: newOrderProduct },
       process.env.TOKEN_SECRET as unknown as Secret
     );
     res.json(token);
@@ -48,10 +48,10 @@ const addProduct = async (_req: Request, res: Response) => {
   }
 };
 
-const products_routes = (app: express.Application) => {
+const orders_routes = (app: express.Application) => {
   app.post('/orders', create);
   app.post('/orders/:id', addProduct);
   app.get('/orders/:id', show);
 };
 
-export default products_routes;
+export default orders_routes;

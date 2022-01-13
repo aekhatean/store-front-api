@@ -34,16 +34,10 @@ const create = async (_req: Request, res: Response) => {
   }
 };
 
-const destroy = async (_req: Request, res: Response) => {
-  const deleted = await store.delete(_req.body.id);
-  res.json(deleted);
-};
-
 const users_routes = (app: express.Application) => {
   app.get('/users', index);
   app.get('/users/:id', show);
   app.post('/users', create);
-  app.delete('/users', destroy);
 };
 
 export default users_routes;

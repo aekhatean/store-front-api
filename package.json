@@ -4,7 +4,7 @@
   "description": "This is an api for online store",
   "main": "index.js",
   "scripts": {
-    "test": "ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
+    "test": "ENV=test db-migrate --env test up && jasmine",
     "start": "nodemon src/server.ts",
     "build": "npx tsc",
     "jasmine": "jasmine",

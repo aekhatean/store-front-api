@@ -63,40 +63,4 @@ export class Users {
       throw new Error(`Could not add new book ${u.username}. Error: ${err}`);
     }
   }
-
-  async delete(id: number): Promise<User> {
-    try {
-      const conn = await Client.connect();
-      const sql = `DELETE FROM users WHERE id=($1)`;
-      const result = await conn.query(sql, [id]);
-      const user = result.rows[0];
-      conn.release();
-      return user;
-    } catch (err) {
-      throw new Error(`Cannot connect to database: ${err}`);
-    }
-  }
-
-  async authenticate(
-    username: string,
-    password: string
-  ): Promise<User | undefined> {
-    try {
-      const conn = await Client.connect();
-      const sql = `SELECT password FROM users WHERE name=($1)`;
-      const result = await conn.query(sql, [username]);
-
-      if (result.rows.length) {
-        const user: User = result.rows[0];
-
-        if (bcrypt.compareSync(password + BCRYPT_PASSWORD, user.password)) {
-          return user;
-        }
-
-        return undefined;
-      }
-    } catch (err) {
-      throw new Error(`Cannot connect to database: ${err}`);
-    }
-  }
 }
