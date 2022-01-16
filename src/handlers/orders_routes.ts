@@ -6,7 +6,7 @@ const store = new Orders();
 
 const show = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const product = await store.show(_req.body.id);
+    const product = await store.show(parseInt(_req.params.id));
     res.json(product);
   } catch (err) {
     res.status(400);
