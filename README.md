@@ -85,7 +85,7 @@ Now, this project with all of the necessary dependancies can be run from your lo
 
 ### Executing program
 
-this application runs on localhost on port 3000, Ways to use this API through terminal:
+this application runs on localhost on port 3000, and postgresql runs on 5432, Ways to use this API through terminal:
 
 - To run this code for production:
 
