@@ -29,11 +29,18 @@ const create = async (_req: Request, res: Response) => {
 
   try {
     const newProduct = await store.create(product);
-    const token = jwt.sign(
-      { product: newProduct },
-      process.env.TOKEN_SECRET as unknown as Secret
+    jwt.verify(
+      _req.headers.token as unknown as string,
+      process.env.TOKEN_SECRET as unknown as Secret,
+      (err, decode) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(decode);
+          res.json(newProduct);
+        }
+      }
     );
-    res.json(token);
   } catch (err) {
     res.status(400);
     res.json(product);

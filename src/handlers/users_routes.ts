@@ -6,7 +6,18 @@ const store = new Users();
 const index = async (_req: Request, res: Response) => {
   try {
     const users = await store.index();
-    res.json(users);
+    jwt.verify(
+      _req.headers.token as unknown as string,
+      process.env.TOKEN_SECRET as unknown as Secret,
+      (err, decode) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(decode);
+          res.json(users);
+        }
+      }
+    );
   } catch (err) {
     res.status(400);
   }
@@ -15,7 +26,18 @@ const index = async (_req: Request, res: Response) => {
 const show = async (_req: Request, res: Response) => {
   try {
     const user = await store.show(parseInt(_req.params.id));
-    res.json(user);
+    jwt.verify(
+      _req.headers.token as unknown as string,
+      process.env.TOKEN_SECRET as unknown as Secret,
+      (err, decode) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(decode);
+          res.json(user);
+        }
+      }
+    );
   } catch (err) {
     res.status(400);
   }

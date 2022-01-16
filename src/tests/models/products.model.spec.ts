@@ -34,8 +34,8 @@ describe('Products model', () => {
       price: 3
     };
 
-    store.create(product).then((productObj) =>
-      expect(productObj).toEqual(
+    store.create(product).then(() =>
+      expect(store.show(1)).toEqual(
         jasmine.objectContaining({
           name: jasmine.any(String),
           price: jasmine.any(Number)

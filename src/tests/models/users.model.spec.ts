@@ -53,8 +53,8 @@ describe('Usera model', () => {
       password: hash
     };
 
-    store.create(user).then((userObj) =>
-      expect(userObj).toEqual(
+    store.create(user).then(() =>
+      expect(store.show(1)).toEqual(
         jasmine.objectContaining({
           first_name: jasmine.any(String),
           last_name: jasmine.any(String),

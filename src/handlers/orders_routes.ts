@@ -21,11 +21,18 @@ const create = async (_req: Request, res: Response): Promise<void> => {
 
   try {
     const newOrder = await store.create(order);
-    const token = jwt.sign(
-      { order: newOrder },
-      process.env.TOKEN_SECRET as unknown as Secret
+    jwt.verify(
+      _req.headers.token as unknown as string,
+      process.env.TOKEN_SECRET as unknown as Secret,
+      (err, decode) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(decode);
+          res.json(newOrder);
+        }
+      }
     );
-    res.json(token);
   } catch (err) {
     res.status(400);
     res.json(order);
