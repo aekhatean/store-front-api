@@ -14,7 +14,6 @@ describe('Users handlers routes work properly', (): void => {
           jasmine.arrayContaining([
             jasmine.objectContaining({
               id: jasmine.any(Number),
-              username: jasmine.any(String),
               first_name: jasmine.any(String),
               last_name: jasmine.any(String),
               password: jasmine.any(String)
@@ -37,20 +36,19 @@ describe('Users handlers routes work properly', (): void => {
     request
       .post('/users')
       .send({
-        username: 'aekhatean',
         first_name: 'Adham',
         last_name: 'Khatean',
         password: '1234'
       })
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .then((response) => expect(response.body).toEqual(jasmine.any(String)));
   });
   it('Should validate request body', () => {
     request
       .post('/users')
       .send({
-        username: 123213
+        first_name: 123213
       })
       .expect(422);
   });

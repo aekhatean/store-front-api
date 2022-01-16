@@ -4,18 +4,25 @@ import { User, Users } from '../models/users.model';
 const store = new Users();
 
 const index = async (_req: Request, res: Response) => {
-  const users = await store.index();
-  res.json(users);
+  try {
+    const users = await store.index();
+    res.json(users);
+  } catch (err) {
+    res.status(400);
+  }
 };
 
 const show = async (_req: Request, res: Response) => {
-  const user = await store.show(_req.body.id);
-  res.json(user);
+  try {
+    const user = await store.show(_req.body.id);
+    res.json(user);
+  } catch (err) {
+    res.status(400);
+  }
 };
 
 const create = async (_req: Request, res: Response) => {
   const user: User = {
-    username: _req.body.username,
     first_name: _req.body.first_name,
     last_name: _req.body.last_name,
     password: _req.body.password

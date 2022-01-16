@@ -27,4 +27,20 @@ describe('Products model', () => {
       ])
     );
   });
+
+  it('should return a Product object on show Product', async (): Promise<void> => {
+    const product: Product = {
+      name: 'pencil',
+      price: 3
+    };
+
+    store.create(product).then((productObj) =>
+      expect(productObj).toEqual(
+        jasmine.objectContaining({
+          name: jasmine.any(String),
+          price: jasmine.any(Number)
+        })
+      )
+    );
+  });
 });

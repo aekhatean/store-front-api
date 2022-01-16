@@ -4,13 +4,21 @@ import { Product, Products } from '../models/products.model';
 const store = new Products();
 
 const index = async (_req: Request, res: Response) => {
-  const products = await store.index();
-  res.json(products);
+  try {
+    const products = await store.index();
+    res.json(products);
+  } catch (err) {
+    res.status(400);
+  }
 };
 
 const show = async (_req: Request, res: Response) => {
-  const product = await store.show(_req.body.id);
-  res.json(product);
+  try {
+    const product = await store.show(_req.body.id);
+    res.json(product);
+  } catch (err) {
+    res.status(400);
+  }
 };
 
 const create = async (_req: Request, res: Response) => {

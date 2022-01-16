@@ -24,4 +24,13 @@ describe('Orders model', () => {
       })
     );
   });
+
+  it('should return an order object on show Order', async (): Promise<void> => {
+    expect(await store.show(1)).toEqual(
+      jasmine.objectContaining({
+        user_id: jasmine.any(String),
+        status: jasmine.any(String)
+      })
+    );
+  });
 });

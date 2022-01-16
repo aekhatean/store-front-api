@@ -1,6 +1,6 @@
-# Image Processing API
+# Store-front API
 
-An api for store-front, where you can perform CRUD operaions on users, products, and orders.
+An api for store-front (ecommerce), where you can perform CRUD operaions on users, products, and orders.
 
 ## Description
 
@@ -41,7 +41,15 @@ git clone https://github.com/aekhatean/store-front-api.git
 npm install
 ```
 
-create two databases one for development and another one for testing, then create a file called ".env", and enter your database and encryption info like this:
+create two databases one for development and another one for testing, then create a file called ".env", using these commands:
+
+```
+db-migrate db:create dev_database (dev_database is an example name you can name whatever you want)
+```
+
+and you do not need to create test database, as it gets created then droped once you run the test script
+
+and enter your database and encryption info like this:
 
 ```
 POSTGRES_HOST=
@@ -55,6 +63,7 @@ ENV=dev
 
 BCRYPT_PASSWORD=
 SALT_ROUNDS=
+TEST_PASSWORD=
 
 TOKEN_SECRET=
 ```
@@ -69,13 +78,14 @@ TOKEN_SECRET=
 - ENV -> Is the environment you are running your app on which detmines your database (development or testing) and it is dev by default
 - BCRYPT_PASSWORD -> The password bcrypt is going to combine with to hash passwords. (can be string you wish)
 - SALT_ROUNDS -> The number of encryption rounds (can be any number, ex: 10)
+- TEST_PASSWORD -> Password will be used for users created while runnig test script
 - TOKEN_SECRET -> The password jwt is going to combine with to create tokens. (can be string you wish)
 
 Now, this project with all of the necessary dependancies can be run from your local device.
 
 ### Executing program
 
-Ways to use this API through terminal
+this application runs on localhost on port 3000, Ways to use this API through terminal:
 
 - To run this code for production:
 
@@ -101,10 +111,10 @@ npm run prettier
 npm run lint
 ```
 
-- To test and build the code for production
+- To test and build the code for testing
 
 ```
-npm run build
+npm run test
 ```
 
 ## API Endpoints
@@ -119,7 +129,7 @@ npm run build
 
 - GET: /users -> to list all users
 - GET: /users/:id -> to list a specific user by id == body parameters (id NUMBER)
-- POST: /users -> To create a new product == body parameters (username STRING, first_name STRING, last_name STRING, password STRING)
+- POST: /users -> To create a new product == body parameters (first_name STRING, last_name STRING, password STRING)
 
 #### Orders
 

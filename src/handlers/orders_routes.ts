@@ -5,8 +5,12 @@ import { Order, OrderProduct, Orders } from '../models/orders.model';
 const store = new Orders();
 
 const show = async (_req: Request, res: Response): Promise<void> => {
-  const product = await store.show(_req.body.id);
-  res.json(product);
+  try {
+    const product = await store.show(_req.body.id);
+    res.json(product);
+  } catch (err) {
+    res.status(400);
+  }
 };
 
 const create = async (_req: Request, res: Response): Promise<void> => {
@@ -41,11 +45,18 @@ const addProduct = async (_req: Request, res: Response): Promise<void> => {
       orderProduct.orderId,
       orderProduct.productId
     );
-    const token = jwt.sign(
-      { orderProduct: newOrderProduct },
-      process.env.TOKEN_SECRET as unknown as Secret
+    jwt.verify(
+      _req.headers.token as unknown as string,
+      process.env.TOKEN_SECRET as unknown as Secret,
+      (err, decode) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(decode);
+          res.json(newOrderProduct);
+        }
+      }
     );
-    res.json(token);
   } catch (err) {
     res.status(400);
     res.json(orderProduct);
