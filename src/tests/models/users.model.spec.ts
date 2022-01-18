@@ -5,10 +5,10 @@ import bcrypt from 'bcrypt';
 dotenv.config();
 const { BCRYPT_PASSWORD, SALT_ROUNDS, TEST_PASSWORD } = process.env;
 
-describe('Usera model', () => {
+describe('Users model', () => {
   const store = new Users();
 
-  it('should return a Product object on create User', async (): Promise<void> => {
+  it('should return a User object on create User', async (): Promise<void> => {
     const hash = bcrypt.hashSync(
       (TEST_PASSWORD as unknown as string) +
         (BCRYPT_PASSWORD as unknown as string),
@@ -53,8 +53,8 @@ describe('Usera model', () => {
       password: hash
     };
 
-    store.create(user).then(() =>
-      expect(store.show(1)).toEqual(
+    await store.create(user).then(async (producedUser) =>
+      expect(await store.show(producedUser.id as unknown as number)).toEqual(
         jasmine.objectContaining({
           first_name: jasmine.any(String),
           last_name: jasmine.any(String),

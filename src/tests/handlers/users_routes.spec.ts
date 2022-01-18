@@ -1,12 +1,17 @@
 import supertest from 'supertest';
+import dotenv from 'dotenv';
 import app from '../../server';
 
+dotenv.config();
+
 const request = supertest(app);
+const { REQ_TOKEN } = process.env;
 
 describe('Users handlers routes work properly', (): void => {
   it('should GET /users to show all users', async (): Promise<void> => {
     request
       .get('/users')
+      .set({ token: REQ_TOKEN })
       .expect('Content-Type', /json/)
       .expect(200)
       .then((response) => {
@@ -24,11 +29,18 @@ describe('Users handlers routes work properly', (): void => {
   });
 
   it('should GET /users/:id to show a specific user', async (): Promise<void> => {
-    request.get('/users/1').expect('Content-Type', /json/).expect(200);
+    request
+      .get('/users/1')
+      .set({ token: REQ_TOKEN })
+      .expect('Content-Type', /json/)
+      .expect(200);
   });
 
   it('should GET /users/:id to show a 404 if a specific user does not exist', () => {
-    request.get('/users/99999999999999999999').expect(404);
+    request
+      .get('/users/99999999999999999999')
+      .set({ token: REQ_TOKEN })
+      .expect(404);
     request.get('/users/hfjdshf8').expect(404);
   });
 

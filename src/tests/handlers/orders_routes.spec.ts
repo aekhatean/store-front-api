@@ -1,7 +1,10 @@
 import supertest from 'supertest';
+import dotenv from 'dotenv';
 import app from '../../server';
 
+dotenv.config();
 const request = supertest(app);
+const { REQ_TOKEN } = process.env;
 
 describe('orders handlers routes work properly', (): void => {
   it('should GET /orders/:id to show current order', async (): Promise<void> => {
@@ -16,33 +19,35 @@ describe('orders handlers routes work properly', (): void => {
   it('should POST /orders to create a new order', () => {
     request
       .post('/orders')
+      .set({ token: REQ_TOKEN })
       .send({
         userId: 1,
         status: 'open'
       })
       .expect('Content-Type', /json/)
-      .expect(200)
-      .then((response) => expect(response.body).toEqual(jasmine.any(String)));
+      .expect(200);
   });
 
   it('should POST /orders/:id to create add a new product to an order', () => {
     request
       .post('/orders/')
+      .set({ token: REQ_TOKEN })
       .send({
         orderId: 1,
         productId: 1,
-        quantity: 1
+        quantity: 1,
+        token: REQ_TOKEN
       })
       .expect('Content-Type', /json/)
-      .expect(200)
-      .then((response) => expect(response.body).toEqual(jasmine.any(String)));
+      .expect(200);
   });
 
   it('Should validate request body', () => {
     request
       .post('/orders')
       .send({
-        name: 123213
+        name: 123213,
+        token: REQ_TOKEN
       })
       .expect(422);
   });

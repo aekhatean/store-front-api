@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import Client from '../database';
 
 export type User = {
+  id?: number;
   first_name: string;
   last_name: string;
   password: string;
@@ -24,13 +25,13 @@ export class Users {
     }
   }
 
-  async show(id: number): Promise<User[]> {
+  async show(id: number): Promise<User> {
     try {
       const conn = await Client.connect();
       const sql = `SELECT * FROM users WHERE id=($1)`;
       const result = conn.query(sql, [id]);
       conn.release();
-      return (await result).rows;
+      return (await result).rows[0];
     } catch (err) {
       throw new Error(`Cannot connect to database: ${err}`);
     }
