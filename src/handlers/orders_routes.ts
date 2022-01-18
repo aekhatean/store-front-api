@@ -7,7 +7,18 @@ const store = new Orders();
 const show = async (_req: Request, res: Response): Promise<void> => {
   try {
     const product = await store.show(parseInt(_req.params.id));
-    res.json(product);
+    jwt.verify(
+      _req.headers.token as unknown as string,
+      process.env.TOKEN_SECRET as unknown as Secret,
+      (err, decode) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(decode);
+          res.json(product);
+        }
+      }
+    );
   } catch (err) {
     res.status(400);
   }
