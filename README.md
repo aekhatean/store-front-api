@@ -80,7 +80,6 @@ TOKEN_SECRET=
 - SALT_ROUNDS -> The number of encryption rounds (can be any number, ex: 10)
 - TEST_PASSWORD -> Password will be used for users created while runnig test script
 - TOKEN_SECRET -> The password jwt is going to combine with to create tokens. (can be string you wish)
-- REQ_TOKEN -> A token that you get on creating a user, To get one simply create a user via Post request on /users and copy the key that you get back as a response (this is essintial to run the testing script)
 
 Now, this project with all of the necessary dependancies can be run from your local device.
 

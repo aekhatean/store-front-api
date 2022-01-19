@@ -4,9 +4,18 @@ import app from '../../server';
 
 dotenv.config();
 const request = supertest(app);
-const { REQ_TOKEN } = process.env;
+let REQ_TOKEN: string;
 
 describe('orders handlers routes work properly', (): void => {
+  beforeAll(async () => {
+    const req = request.post('/users').send({
+      first_name: 'Adham',
+      last_name: 'Khatean',
+      password: '1234'
+    });
+    REQ_TOKEN = (await req).text.replace(/['"]+/g, '');
+  });
+
   it('should GET /orders/:id to show current order', async (): Promise<void> => {
     request.get('/orders/1').expect('Content-Type', /json/).expect(200);
   });
