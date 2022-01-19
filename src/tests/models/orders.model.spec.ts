@@ -57,11 +57,35 @@ describe('Orders model', () => {
     );
   });
 
-  it('should return an order object on show Order', async (): Promise<void> => {
-    expect(await store.show(1)).toEqual(
+  it('should return an order object on add product', async (): Promise<void> => {
+    const product: Product = {
+      name: 'gloves',
+      price: 6
+    };
+
+    const order: Order = {
+      userId: 1,
+      status: 'open'
+    };
+
+    const newProduct = products.create(product);
+    const newOrder = store.create(order);
+
+    expect(
+      await store.addProduct(
+        1,
+        (
+          await newOrder
+        ).id as unknown as number,
+        (
+          await newProduct
+        ).id as unknown as number
+      )
+    ).toEqual(
       jasmine.objectContaining({
-        user_id: jasmine.any(String),
-        status: jasmine.any(String)
+        order_id: jasmine.any(String),
+        product_id: jasmine.any(String),
+        quantity: jasmine.any(Number)
       })
     );
   });
